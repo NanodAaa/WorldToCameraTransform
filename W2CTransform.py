@@ -15,7 +15,7 @@ PIXEL_SIZE = 3.00E-03 # (mm)
 WORLD_CORDINATES = ()
 
 if __name__ == '__main__':
-    mygui = gui.myGUI('root')
+    mygui = gui.W2CTransform('root')
     mygui.start()
     
     exit()
