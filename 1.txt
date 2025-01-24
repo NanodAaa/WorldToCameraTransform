@@ -1,1 +1,0 @@
-当前我有一个 畸变表 , 里面有 Real Height 和 Ref Height 关于 Y Angle 的关系, 我现在拟合出 Real Height 关于 Y Angle 的函数 f(φ). 然后通过 相机坐标 Pc(Xc, Yc, Zc) 求出入射角和 图像平面上的点的理论坐标 Pref(x, y) 为 x = 焦距 * (Xc / Zc), y = 焦距 * (Yc / Zc), 理论相高 = sqrt(x^2+y^2). 再通过 Real Height 关于 Y Angle 的函数 f(φ) 求出 真实相高. 最后通过相似三角形求出 点在图像平面上的真实坐标 Preal(x,y) 的 x = x_ref *真实相高 / 理论相高, y = y_ref * 真实相高 / 理论相高. 这个方法可以吗

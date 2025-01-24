@@ -1,4 +1,0 @@
-World Coordinates: [3.21, 6.54, 9.87]
-Fitting Function Coefficients: [-1.876641e-10, -7.446742e-09, -2.181705e-06, -3.051775e-06, 0.1049506, -8.559749e-06]
-Camera Pose: [0.12, 0.34, 0.0]
-Sensor Params: [1920, 1080, 0.003]
