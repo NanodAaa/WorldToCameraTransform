@@ -3,6 +3,7 @@
 import math
 import json
 import os
+import sys
 import numpy as np
 import tkinter as tk
 
@@ -12,8 +13,8 @@ class W2CTransform():
     
     entry_list = []
     
-    label_format_dict = { 'font' : ('consolas', 14), 'padx' : 5, 'pady' : 5, 'sticky' : 'w', 'width' : 13 }
-    entry_format_dict = { 'font' : ('consolas', 14), 'padx' : 5, 'pady' : 5, 'sticky' : 'ew', 'width' : 13 }
+    label_format_dict = { 'font' : ('consolas', 11), 'padx' : 5, 'pady' : 5, 'sticky' : 'w', 'width' : 14 }
+    entry_format_dict = { 'font' : ('consolas', 12), 'padx' : 5, 'pady' : 5, 'sticky' : 'ew', 'width' : 13 }
     button_format_dict = { 'bg' : 'lightblue', 'padx' : 5, 'pady' : 5, 'sticky' : 'ewsn', 'width' : 13 }
     
     data = {
@@ -27,7 +28,14 @@ class W2CTransform():
     
     def __init__(self, init_window_name):
         self.init_window_name = init_window_name
+        self.get_data_json_path()
         self.load_data_from_json()
+    
+    def get_data_json_path(self):
+        for dirpath, dirnames, filenames in os.walk(os.path.dirname(__file__)):
+            if self.data_filename in filenames:
+                self.data_filepath = os.path.join(dirpath, self.data_filename)
+                return
     
     def load_data_from_json(self):
         """ 
@@ -49,7 +57,7 @@ class W2CTransform():
         self.init_window_name.title('W2CTransform')
         
         # World Coordinates
-        self.world_coordinate_label = tk.Label(self.init_window_name, text='P_w: ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
+        self.world_coordinate_label = tk.Label(self.init_window_name, text='P_w(XYZ): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
         self.world_coordinate_label.grid(row=0, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
 
         self.world_coordinate_x_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
@@ -68,7 +76,7 @@ class W2CTransform():
         self.entry_list.append(self.world_coordinate_z_entry)
         
         # Camera Pose
-        self.camera_pose_label = tk.Label(self.init_window_name, text='Pose: ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
+        self.camera_pose_label = tk.Label(self.init_window_name, text='Pose(PYR): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
         self.camera_pose_label.grid(row=1, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
         
         self.camera_pose_pitch_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
@@ -88,7 +96,7 @@ class W2CTransform():
         self.entry_list.append(self.camera_pose_roll_entry)
         
         # Fitting Function Coefficients
-        self.fitting_func_coefs_label = tk.Label(self.init_window_name, text='FitCoefs: ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
+        self.fitting_func_coefs_label = tk.Label(self.init_window_name, text='FitCoe(X5>0): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
         self.fitting_func_coefs_label.grid(row=2, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
         
         self.fitting_func_coefs_x5_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
@@ -122,7 +130,7 @@ class W2CTransform():
         self.entry_list.append(self.fitting_func_coefs_x0_entry)
         
         # Sensor Params
-        self.sensor_params_label = tk.Label(self.init_window_name, text='SensrParams: ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
+        self.sensor_params_label = tk.Label(self.init_window_name, text='SenPrms(WHP): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
         self.sensor_params_label.grid(row=3, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
         
         self.sensor_params_width_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
@@ -141,7 +149,7 @@ class W2CTransform():
         self.entry_list.append(self.sensor_params_pixel_size_entry)
         
         # camera Coordinates
-        self.camera_corrdinates_label = tk.Label(self.init_window_name, text='P_c: ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
+        self.camera_corrdinates_label = tk.Label(self.init_window_name, text='P_c(XYZ): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
         self.camera_corrdinates_label.grid(row=4, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
         
         self.camera_corrdinates_x_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
@@ -160,7 +168,7 @@ class W2CTransform():
         self.entry_list.append(self.camera_corrdinates_z_entry)
         
         # Pixel Coordinates
-        self.pixel_coordinates_label = tk.Label(self.init_window_name, text='P_p: ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
+        self.pixel_coordinates_label = tk.Label(self.init_window_name, text='P_p(XY): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
         self.pixel_coordinates_label.grid(row=5, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
         
         self.pixel_coordinate_x_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])

@@ -1,0 +1,1 @@
+C:\Users\97104\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\Scripts\pyinstaller.exe -D -w --add-data data.json;data.json W2CTransform.py
