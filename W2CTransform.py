@@ -201,9 +201,17 @@ class W2CTransform():
         
         return
                 
+    def onclick_exit(self):
+        self.exit()
+        
+    def exit(self):
+        sys.exit()
+                
     def onclick_button_calculate(self):
         self.calculate()
         self.refresh_data_in_gui()
+        self.save_data_from_entry_to_memory()
+        self.save_data_to_json()
         return
                 
     def calculate(self):
@@ -346,6 +354,7 @@ class W2CTransform():
         
     def start(self):
         self.set_init_window()
+        self.init_window_name.protocol("WM_DELETE_WINDOW", self.onclick_exit) # Bind
         self.init_window_name.mainloop()
         
 if __name__ == '__main__':
