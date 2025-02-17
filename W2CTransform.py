@@ -17,10 +17,12 @@ class W2CTransform():
     button_format_dict = { 'bg' : 'lightblue', 'padx' : 5, 'pady' : 5, 'sticky' : 'ewsn', 'width' : 13 }
     
     data = {
-        'world coordinates' : { 'x' : 0.0, 'y' : 0.0, 'z' : 0.0 },
-        'fitting func coefs' : { 'x5' : 0.0, 'x4' : 0.0, 'x3' : 0.0, 'x2' : 0.0, 'x1' : 0.0, 'x0' : 0.0 },
-        'camera pose' : { 'pitch' : 0.0, 'yaw' : 0.0, 'roll' : 0.0, 'pitch radians' : 0.0, 'yaw radians' : 0.0, 'roll radians' : 0.0 },
-        'sensor params' : { 'width' : 0, 'height' : 0, 'pixel size' : 0.0 },
+        'world coordinates' : { 'x' : '', 'y' : '', 'z' : '' },
+        'fitting func coefs' : { 'x5' : '', 'x4' : '', 'x3' : '', 'x2' : '', 'x1' : '', 'x0' : '' },
+        'camera pose' : { 'pitch' : '', 'yaw' : '', 'roll' : '' },
+        'sensor params' : { 'width' : '', 'height' : '', 'pixel size' : '' },
+        'camera coordinates' : { 'x' : '', 'y' : '', 'z' : '' },
+        'pixel coordinates' : { 'x' : '', 'y' : '' },
     }
     
     def __init__(self, init_window_name):
@@ -33,7 +35,7 @@ class W2CTransform():
         """
         if os.path.exists(self.data_filepath):
             with open(self.data_filepath, 'r') as f:
-                self.data = json.load(f)                
+                self.data = json.load(f) # Data in memory               
                 f.close()
                 
         else:
@@ -138,43 +140,84 @@ class W2CTransform():
         self.sensor_params_pixel_size_entry.insert(0, self.data['sensor params']['pixel size'])
         self.entry_list.append(self.sensor_params_pixel_size_entry)
         
+        # camera Coordinates
+        self.camera_corrdinates_label = tk.Label(self.init_window_name, text='P_c: ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
+        self.camera_corrdinates_label.grid(row=4, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
+        
+        self.camera_corrdinates_x_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
+        self.camera_corrdinates_x_entry.grid(row=4, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.camera_corrdinates_x_entry.insert(0, self.data['camera coordinates']['x'])
+        self.entry_list.append(self.camera_corrdinates_x_entry)
+        
+        self.camera_corrdinates_y_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
+        self.camera_corrdinates_y_entry.grid(row=4, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.camera_corrdinates_y_entry.insert(0, self.data['camera coordinates']['y'])
+        self.entry_list.append(self.camera_corrdinates_y_entry)
+        
+        self.camera_corrdinates_z_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
+        self.camera_corrdinates_z_entry.grid(row=4, column=3, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.camera_corrdinates_z_entry.insert(0, self.data['camera coordinates']['z'])
+        self.entry_list.append(self.camera_corrdinates_z_entry)
+        
+        # Pixel Coordinates
+        self.pixel_coordinates_label = tk.Label(self.init_window_name, text='P_p: ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
+        self.pixel_coordinates_label.grid(row=5, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
+        
+        self.pixel_coordinate_x_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
+        self.pixel_coordinate_x_entry.grid(row=5, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.pixel_coordinate_x_entry.insert(0, self.data['pixel coordinates']['x'])
+        self.entry_list.append(self.pixel_coordinate_x_entry)
+        
+        self.pixel_coordinate_y_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
+        self.pixel_coordinate_y_entry.grid(row=5, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.pixel_coordinate_y_entry.insert(0, self.data['pixel coordinates']['y'])
+        self.entry_list.append(self.pixel_coordinate_y_entry)
+        
         # Calculate Button
         self.calculate_button = tk.Button(self.init_window_name, text='Calculate', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'],command=self.onclick_button_calculate)
-        self.calculate_button.grid(row=4, column=0, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
+        self.calculate_button.grid(row=6, column=0, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
                 
         # Save Button
         self.calculate_button = tk.Button(self.init_window_name, text='Save', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'],command=self.onclick_button_save)
-        self.calculate_button.grid(row=4, column=1, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])        
+        self.calculate_button.grid(row=6, column=1, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])        
                 
     def onclick_button_save(self):
-        self.save_data_to_memory()
-        self.save_data_to_json()
-        self.refresh_data_in_gui()
+        if self.save_data_from_entry_to_memory() == -1:
+            return
+        
+        if self.save_data_to_json() == -1:
+            return
+
+        if self.refresh_data_in_gui() == -1:
+            return
+        
         return
                 
     def onclick_button_calculate(self):
         self.calculate()
+        self.refresh_data_in_gui()
         return
                 
     def calculate(self):
-        self.save_data_to_memory()
+        self.save_data_from_entry_to_memory()
         
-        # Pitch Transform
-        pitch_radians =  self.data['camera pose']['pitch radians'] = math.radians(self.data['camera pose']['pitch'])
-        yaw_radians = self.data['camera pose']['yaw radians'] = math.radians(self.data['camera pose']['yaw'])
-        roll_radians = self.data['camera pose']['roll radians'] = math.radians(self.data['camera pose']['roll'])
-        
-        x = self.data['world coordinates']['x']
-        y = self.data['world coordinates']['y']
-        z = self.data['world coordinates']['z']
+        x_w = self.data['world coordinates']['x']
+        y_w = self.data['world coordinates']['y']
+        z_w = self.data['world coordinates']['z']
         
         world_coordinates_vector = np.array(
             [
-                [x],
-                [y],
-                [z],
+                [x_w],
+                [y_w],
+                [z_w],
             ]
         )
+        
+        # Pitch Transform
+        pitch_radians = math.radians(self.data['camera pose']['pitch'])
+        yaw_radians = math.radians(self.data['camera pose']['yaw'])
+        roll_radians = math.radians(self.data['camera pose']['roll'])
+        
         pitch_rotate_matrix = np.array(
             [
                 [math.cos(pitch_radians), 0, math.sin(pitch_radians)],
@@ -183,7 +226,7 @@ class W2CTransform():
             ]      
         )
         
-        yaw_rorate_matrix = np.array(
+        yaw_rotate_matrix = np.array(
             [
                 [math.cos(yaw_radians), -math.sin(yaw_radians), 0],
                 [math.sin(yaw_radians), math.cos(yaw_radians), 0],
@@ -191,15 +234,53 @@ class W2CTransform():
             ]
         )
         
-        world_coordinates_vector_pitched = np.dot(pitch_rotate_matrix, world_coordinates_vector)
-#        print(world_coordinates_vector_pitched)
+        roll_rotate_matrix = np.array(
+            [
+                [1, 0, 0],
+                [0, math.cos(roll_radians), -math.sin(roll_radians)],
+                [0, math.sin(roll_radians), math.cos(roll_radians)],
+            ]
+        )
         
-        world_coordinates_vector_pitched_yawed = np.dot(yaw_rorate_matrix, world_coordinates_vector_pitched)
+        world_coordinates_vector_pitched = np.dot(pitch_rotate_matrix, world_coordinates_vector)
+        world_coordinates_vector_pitched_yawed = np.dot(yaw_rotate_matrix, world_coordinates_vector_pitched)
+        world_coordinates_vector_pitched_yawed_rolled = np.dot(roll_rotate_matrix, world_coordinates_vector_pitched_yawed)
+
+        x_c = float(world_coordinates_vector_pitched_yawed_rolled[0][0])
+        y_c = float(world_coordinates_vector_pitched_yawed_rolled[1][0])
+        z_c = float(world_coordinates_vector_pitched_yawed_rolled[2][0])
+        
+        distance = math.sqrt(x_c**2 + y_c**2 + z_c**2)
+        angle = math.degrees(math.acos(x_c / distance))
+        fitting_func_coefs = [self.data['fitting func coefs']['x5'], self.data['fitting func coefs']['x4'], self.data['fitting func coefs']['x3'], self.data['fitting func coefs']['x2'], self.data['fitting func coefs']['x1'], self.data['fitting func coefs']['x0']]
+        pixel_to_image_distance = real_height = np.polyval(fitting_func_coefs, angle)
+        azimuth_radians = math.atan2(z_c, -y_c)
+        azimuth = (math.degrees(azimuth_radians) + 360 ) % 360
+        
+        pixel_size = self.data['sensor params']['pixel size']
+        x_p = (pixel_to_image_distance / pixel_size) * math.cos(azimuth_radians)
+        y_p = (pixel_to_image_distance / pixel_size) * math.sin(azimuth_radians)
+        
+        self.data['camera coordinates'] = { 'x' : x_c, 'y' : y_c, 'z' : z_c }
+        self.data['pixel coordinates'] = { 'x' : x_p, 'y' : y_p }
+        
+#        print(world_coordinates_vector_pitched)
 #        print(world_coordinates_vector_pitched_yawed)
+#        print(world_coordinates_vector_pitched_yawed_rolled)
+#        print(real_height)
+#        print(azimuth)
+#        print(x_p, y_p)
         
         return
         
-    def save_data_to_memory(self):         
+    def save_data_from_entry_to_memory(self):      
+        """
+        Save data to memory. 
+        """   
+        """ for entry in self.entry_list:
+            if entry.get() == '':
+                return -1 """
+        
         self.data['world coordinates'] = { 
             'x' : float(self.world_coordinate_x_entry.get().replace('E', 'e')), 'y' : float(self.world_coordinate_y_entry.get().replace('E', 'e')), 'z' : float(self.world_coordinate_z_entry.get().replace('E', 'e')) }
         self.data['fitting func coefs'] = { 
@@ -228,21 +309,32 @@ class W2CTransform():
     def refresh_data_in_gui(self):
         self.clear_data_in_gui()
         
+        # World coordinates
         self.world_coordinate_x_entry.insert(0, self.data['world coordinates']['x'])
         self.world_coordinate_y_entry.insert(0, self.data['world coordinates']['y'])
         self.world_coordinate_z_entry.insert(0, self.data['world coordinates']['z'])
+        # Pose
         self.camera_pose_pitch_entry.insert(0, self.data['camera pose']['pitch'])
         self.camera_pose_yaw_entry.insert(0, self.data['camera pose']['yaw'])
         self.camera_pose_roll_entry.insert(0, self.data['camera pose']['roll'])
+        # Fitting funcion coefficients
         self.fitting_func_coefs_x5_entry.insert(0, self.data['fitting func coefs']['x5'])
         self.fitting_func_coefs_x4_entry.insert(0, self.data['fitting func coefs']['x4'])
         self.fitting_func_coefs_x3_entry.insert(0, self.data['fitting func coefs']['x3'])
         self.fitting_func_coefs_x2_entry.insert(0, self.data['fitting func coefs']['x2'])
         self.fitting_func_coefs_x1_entry.insert(0, self.data['fitting func coefs']['x1'])
         self.fitting_func_coefs_x0_entry.insert(0, self.data['fitting func coefs']['x0'])
+        # Sensor params
         self.sensor_params_width_entry.insert(0, self.data['sensor params']['width'])
         self.sensor_params_height_entry.insert(0, self.data['sensor params']['height'])
         self.sensor_params_pixel_size_entry.insert(0, self.data['sensor params']['pixel size'])
+        # Camera coordinates
+        self.camera_corrdinates_x_entry.insert(0, self.data['camera coordinates']['x'])
+        self.camera_corrdinates_y_entry.insert(0, self.data['camera coordinates']['y'])
+        self.camera_corrdinates_z_entry.insert(0, self.data['camera coordinates']['z'])
+        # Pixel coordinates
+        self.pixel_coordinate_x_entry.insert(0, self.data['pixel coordinates']['x'])
+        self.pixel_coordinate_y_entry.insert(0, self.data['pixel coordinates']['y'])
         
     def start(self):
         self.set_init_window()
