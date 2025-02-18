@@ -155,16 +155,19 @@ class W2CTransform():
         self.camera_corrdinates_x_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
         self.camera_corrdinates_x_entry.grid(row=4, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.camera_corrdinates_x_entry.insert(0, self.data['camera coordinates']['x'])
+        self.camera_corrdinates_x_entry.config(state='readonly') # Set entry to read only
         self.entry_list.append(self.camera_corrdinates_x_entry)
         
         self.camera_corrdinates_y_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
         self.camera_corrdinates_y_entry.grid(row=4, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.camera_corrdinates_y_entry.insert(0, self.data['camera coordinates']['y'])
+        self.camera_corrdinates_y_entry.config(state='readonly') # Set entry to read only
         self.entry_list.append(self.camera_corrdinates_y_entry)
         
         self.camera_corrdinates_z_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
         self.camera_corrdinates_z_entry.grid(row=4, column=3, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.camera_corrdinates_z_entry.insert(0, self.data['camera coordinates']['z'])
+        self.camera_corrdinates_z_entry.config(state='readonly') # Set entry to read only
         self.entry_list.append(self.camera_corrdinates_z_entry)
         
         # Pixel Coordinates
@@ -174,20 +177,42 @@ class W2CTransform():
         self.pixel_coordinate_x_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
         self.pixel_coordinate_x_entry.grid(row=5, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.pixel_coordinate_x_entry.insert(0, self.data['pixel coordinates']['x'])
+        self.pixel_coordinate_x_entry.config(state='readonly') # Set entry to read only
         self.entry_list.append(self.pixel_coordinate_x_entry)
         
         self.pixel_coordinate_y_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
         self.pixel_coordinate_y_entry.grid(row=5, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.pixel_coordinate_y_entry.insert(0, self.data['pixel coordinates']['y'])
+        self.pixel_coordinate_y_entry.config(state='readonly') # Set entry to read only
         self.entry_list.append(self.pixel_coordinate_y_entry)
         
         # Calculate Button
-        self.calculate_button = tk.Button(self.init_window_name, text='Calculate', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'],command=self.onclick_button_calculate)
+        self.calculate_button = tk.Button(self.init_window_name, text='Calculate', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_calculate)
         self.calculate_button.grid(row=6, column=0, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
                 
         # Save Button
-        self.calculate_button = tk.Button(self.init_window_name, text='Save', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'],command=self.onclick_button_save)
-        self.calculate_button.grid(row=6, column=1, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])        
+        self.save_button = tk.Button(self.init_window_name, text='Save', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_save)
+        self.save_button.grid(row=6, column=1, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])        
+
+        # Positive Button
+        self.positive_button = tk.Button(self.init_window_name, text='Positive', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.positive)
+        self.positive_button.grid(row=6, column=2, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
+        
+        # Reverse Button
+        self.reverse_button = tk.Button(self.init_window_name, text='Reverse', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.reverse)
+        self.reverse_button.grid(row=6, column=3, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
+                
+    def onclick_button_positive(self):
+        self.positive()
+    
+    def positive(self):
+        return
+              
+    def onclick_button_reverse(self):
+        self.reverse()
+    
+    def reverse(self):
+        return
                 
     def onclick_button_save(self):
         if self.save_data_from_entry_to_memory() == -1:
@@ -354,7 +379,7 @@ class W2CTransform():
         
     def start(self):
         self.set_init_window()
-        self.init_window_name.protocol("WM_DELETE_WINDOW", self.onclick_exit) # Bind
+        self.init_window_name.protocol("WM_DELETE_WINDOW", self.onclick_exit) # Bind exit button to onclick_exit()
         self.init_window_name.mainloop()
         
 if __name__ == '__main__':
