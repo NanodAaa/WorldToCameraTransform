@@ -258,10 +258,10 @@ class W2CTransform():
         if self.save_data_to_json() == -1:
             return
 
-        """ 
+        
         if self.refresh_data_in_gui() == -1:
             return
-        """
+       
         
         self.message_label.config(text='Data saved!')
         return
@@ -310,7 +310,7 @@ class W2CTransform():
                 [math.cos(pitch_radians), 0, math.sin(pitch_radians)],
                 [0, 1, 0],
                 [-math.sin(pitch_radians), 0, math.cos(pitch_radians)],
-            ]      
+            ]
         )
         
         yaw_rotate_matrix = np.array(
@@ -338,16 +338,16 @@ class W2CTransform():
         z_c = float(world_coordinates_vector_pitched_yawed_rolled[2][0])
         
         # Camera coordinates to Pixel coordinates
-        distance = math.sqrt(x_c**2 + y_c**2 + z_c**2)
+        distance = math.sqrt(x_c**2 + y_c**2 + z_c**2) # Distance to nodal point
         angle = math.degrees(math.acos(x_c / distance))
         fitting_func_coefs = [self.data['fitting func coefs']['x5'], self.data['fitting func coefs']['x4'], self.data['fitting func coefs']['x3'], self.data['fitting func coefs']['x2'], self.data['fitting func coefs']['x1'], self.data['fitting func coefs']['x0']]
-        pixel_to_image_distance = real_height = np.polyval(fitting_func_coefs, angle)
+        pixel_to_image_center_distance = real_height = np.polyval(fitting_func_coefs, angle)
         azimuth_radians = math.atan2(z_c, -y_c)
         azimuth = (math.degrees(azimuth_radians) + 360 ) % 360
         
         pixel_size = self.data['sensor params']['pixel size']
-        x_p = (pixel_to_image_distance / pixel_size) * math.cos(azimuth_radians)
-        y_p = (pixel_to_image_distance / pixel_size) * math.sin(azimuth_radians)
+        x_p = (pixel_to_image_center_distance / pixel_size) * math.cos(azimuth_radians)
+        y_p = (pixel_to_image_center_distance / pixel_size) * math.sin(azimuth_radians)
         
         # Write data to memory
         self.data['camera coordinates'] = { 'x' : x_c, 'y' : y_c, 'z' : z_c }
@@ -357,26 +357,54 @@ class W2CTransform():
         
     def calculate_reverse(self):
         # Pixel coordinates to Camera coordinatess
+        distance = 60.834 # Distance to nodal point
+        x_p = self.data['pixel coordinates']['x']
+        y_p = self.data['pixel coordinates']['y']
+        fitting_func_coefs = [self.data['fitting func coefs']['x5'], self.data['fitting func coefs']['x4'], self.data['fitting func coefs']['x3'], self.data['fitting func coefs']['x2'], self.data['fitting func coefs']['x1'], self.data['fitting func coefs']['x0']]
         
+        azimuth_radians = math.atan2(y_p, -x_p)
+        pixel_to_image_center_distance = real_height = math.sqrt(x_p**2 + y_p**2)
+        angle = np.polyval(fitting_func_coefs, pixel_to_image_center_distance)
+        point_to_camera_center_distance = distance * math.sin(angle)
         
+        x_c = distance * math.cos(angle)
+        y_c = distance * math.sin(azimuth_radians)
+        z_c = distance * math.cos(azimuth_radians)
+
         return
         
     def save_data_from_entry_to_memory(self):      
         """
         Save data to memory. 
         """   
-        
+        # World Coordinates
         self.data['world coordinates'] = { 
             'x' : float(self.world_coordinate_x_entry.get().replace('E', 'e')), 'y' : float(self.world_coordinate_y_entry.get().replace('E', 'e')), 'z' : float(self.world_coordinate_z_entry.get().replace('E', 'e')) }
+        
+        # Fitting Functiong Coefficients
         self.data['fitting func coefs'] = { 
             'x5' : float(self.fitting_func_coefs_x5_entry.get().replace('E', 'e')), 'x4' : float(self.fitting_func_coefs_x4_entry.get().replace('E', 'e')),
             'x3' : float(self.fitting_func_coefs_x3_entry.get().replace('E', 'e')), 'x2' : float(self.fitting_func_coefs_x2_entry.get().replace('E', 'e')),
             'x1' : float(self.fitting_func_coefs_x1_entry.get().replace('E', 'e')), 'x0' : float(self.fitting_func_coefs_x0_entry.get().replace('E', 'e')),
         }
+        
+        # Camera Pose
         self.data['camera pose'] = { 
             'pitch' : float(self.camera_pose_pitch_entry.get().replace('E', 'e')), 'yaw' : float(self.camera_pose_yaw_entry.get().replace('E', 'e')), 'roll' : float(self.camera_pose_roll_entry.get().replace('E', 'e')) }
+        
+        # Sensor Params
         self.data['sensor params'] = { 
             'width' : int(self.sensor_params_width_entry.get()), 'height' : int(self.sensor_params_height_entry.get()), 'pixel size' : float(self.sensor_params_pixel_size_entry.get().replace('E', 'e')) }       
+           
+        # Camera Coordinates
+        self.data['camera coordinates'] = {
+            'x' : float(self.camera_corrdinates_x_entry.get().replace('E', 'e')), 'y' : float(self.camera_corrdinates_y_entry.get().replace('E', 'e')), 'z' : float(self.camera_corrdinates_z_entry.get().replace('E', 'e'))
+        }
+           
+        # Pixel Coordinates
+        self.data['pixel coordinates'] = {
+            'x' : float(self.pixel_coordinate_x_entry.get().replace('E', 'e')), 'y' : float(self.pixel_coordinate_y_entry.get().replace('E', 'e'))
+        }
            
         return
     
