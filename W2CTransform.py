@@ -12,6 +12,7 @@ class W2CTransform():
     data_filepath = os.path.join(os.path.dirname(__file__), data_filename)
     
     calculate_mode_positive = True
+    lock_mode = True
     
     entry_list = []
     
@@ -212,11 +213,11 @@ class W2CTransform():
         # Lock Button
         self.lock_button = tk.Button(self.init_window_name, text='Lock', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_lock)
         self.lock_button.grid(row=7, column=0, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
+        self.lock_button.config(state='disabled')
         
         # Unlock Button
         self.unlock_button = tk.Button(self.init_window_name, text='Unlock', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_unlock)
         self.unlock_button.grid(row=7, column=1, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
-        self.unlock_button.config(state='disabled')
         
         # Message Label
         self.message_label = tk.Label(self.init_window_name, text='Welcome!', font=self.label_format_dict['font'], width=15, foreground='red', borderwidth=2, relief="solid")
@@ -469,7 +470,7 @@ class W2CTransform():
         self.camera_pose_pitch_entry.insert(0, self.data['camera pose']['pitch'])
         self.camera_pose_yaw_entry.insert(0, self.data['camera pose']['yaw'])
         self.camera_pose_roll_entry.insert(0, self.data['camera pose']['roll'])
-        
+
         # Fitting funcion coefficients
         self.fitting_func_coefs_x5_entry.delete(0, tk.END)
         self.fitting_func_coefs_x4_entry.delete(0, tk.END)
@@ -640,6 +641,7 @@ class W2CTransform():
         
     def start(self):
         self.set_init_window()
+        self.lock()
         self.init_window_name.protocol("WM_DELETE_WINDOW", self.onclick_exit) # Bind exit button to onclick_exit()
         self.init_window_name.mainloop()
         
