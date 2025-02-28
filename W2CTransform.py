@@ -209,6 +209,15 @@ class W2CTransform():
         self.reverse_button = tk.Button(self.init_window_name, text='Reverse', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_reverse)
         self.reverse_button.grid(row=6, column=3, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])        
                 
+        # Lock Button
+        self.lock_button = tk.Button(self.init_window_name, text='Lock', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_lock)
+        self.lock_button.grid(row=7, column=0, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
+        
+        # Unlock Button
+        self.unlock_button = tk.Button(self.init_window_name, text='Unlock', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_unlock)
+        self.unlock_button.grid(row=7, column=1, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
+        self.unlock_button.config(state='disabled')
+        
         # Message Label
         self.message_label = tk.Label(self.init_window_name, text='Welcome!', font=self.label_format_dict['font'], width=15, foreground='red', borderwidth=2, relief="solid")
         self.message_label.grid(row=6, column=4, columnspan=2, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky='wesn')
@@ -356,20 +365,31 @@ class W2CTransform():
         return
         
     def calculate_reverse(self):
+        """ 
+        """
         # Pixel coordinates to Camera coordinatess
-        distance = 60.834 # Distance to nodal point
         x_p = self.data['pixel coordinates']['x']
         y_p = self.data['pixel coordinates']['y']
-        fitting_func_coefs = [self.data['fitting func coefs']['x5'], self.data['fitting func coefs']['x4'], self.data['fitting func coefs']['x3'], self.data['fitting func coefs']['x2'], self.data['fitting func coefs']['x1'], self.data['fitting func coefs']['x0']]
+        fitting_func_coefs = [
+            self.data['fitting func coefs']['x5'], 
+            self.data['fitting func coefs']['x4'], 
+            self.data['fitting func coefs']['x3'], 
+            self.data['fitting func coefs']['x2'], 
+            self.data['fitting func coefs']['x1'], 
+            self.data['fitting func coefs']['x0']
+        ]
+        distance = 2000
         
-        azimuth_radians = math.atan2(y_p, -x_p)
-        pixel_to_image_center_distance = real_height = math.sqrt(x_p**2 + y_p**2)
-        angle = np.polyval(fitting_func_coefs, pixel_to_image_center_distance)
-        point_to_camera_center_distance = distance * math.sin(angle)
+        real_height = math.sqrt(x_p**2 + y_p**2)
+        azimuth_on_sensor = (math.degrees(math.atan2(x_p, -y_p)) + 270) % 360 
+        angle = np.polyval(fitting_func_coefs, real_height)
+        d_on_plane_xy = math.tan(math.radians(angle)) * distance
+        x = d_on_plane_xy * math.sin(math.radians(azimuth_on_sensor))
+        y = d_on_plane_xy * math.cos(math.radians(azimuth_on_sensor))
+        z = distance
         
-        x_c = distance * math.cos(angle)
-        y_c = distance * math.sin(azimuth_radians)
-        z_c = distance * math.cos(azimuth_radians)
+        # Write data to memory
+        self.data['camera coordinates'] = { 'x' : x, 'y' : y, 'z' : z }
 
         return
         
@@ -379,31 +399,46 @@ class W2CTransform():
         """   
         # World Coordinates
         self.data['world coordinates'] = { 
-            'x' : float(self.world_coordinate_x_entry.get().replace('E', 'e')), 'y' : float(self.world_coordinate_y_entry.get().replace('E', 'e')), 'z' : float(self.world_coordinate_z_entry.get().replace('E', 'e')) }
+            'x' : float(self.world_coordinate_x_entry.get().replace('E', 'e')), 
+            'y' : float(self.world_coordinate_y_entry.get().replace('E', 'e')), 
+            'z' : float(self.world_coordinate_z_entry.get().replace('E', 'e')) 
+        }
         
         # Fitting Functiong Coefficients
         self.data['fitting func coefs'] = { 
-            'x5' : float(self.fitting_func_coefs_x5_entry.get().replace('E', 'e')), 'x4' : float(self.fitting_func_coefs_x4_entry.get().replace('E', 'e')),
-            'x3' : float(self.fitting_func_coefs_x3_entry.get().replace('E', 'e')), 'x2' : float(self.fitting_func_coefs_x2_entry.get().replace('E', 'e')),
-            'x1' : float(self.fitting_func_coefs_x1_entry.get().replace('E', 'e')), 'x0' : float(self.fitting_func_coefs_x0_entry.get().replace('E', 'e')),
+            'x5' : float(self.fitting_func_coefs_x5_entry.get().replace('E', 'e')), 
+            'x4' : float(self.fitting_func_coefs_x4_entry.get().replace('E', 'e')),
+            'x3' : float(self.fitting_func_coefs_x3_entry.get().replace('E', 'e')), 
+            'x2' : float(self.fitting_func_coefs_x2_entry.get().replace('E', 'e')),
+            'x1' : float(self.fitting_func_coefs_x1_entry.get().replace('E', 'e')), 
+            'x0' : float(self.fitting_func_coefs_x0_entry.get().replace('E', 'e')),
         }
         
         # Camera Pose
         self.data['camera pose'] = { 
-            'pitch' : float(self.camera_pose_pitch_entry.get().replace('E', 'e')), 'yaw' : float(self.camera_pose_yaw_entry.get().replace('E', 'e')), 'roll' : float(self.camera_pose_roll_entry.get().replace('E', 'e')) }
+            'pitch' : float(self.camera_pose_pitch_entry.get().replace('E', 'e')), 
+            'yaw' : float(self.camera_pose_yaw_entry.get().replace('E', 'e')), 
+            'roll' : float(self.camera_pose_roll_entry.get().replace('E', 'e')) 
+        }
         
         # Sensor Params
         self.data['sensor params'] = { 
-            'width' : int(self.sensor_params_width_entry.get()), 'height' : int(self.sensor_params_height_entry.get()), 'pixel size' : float(self.sensor_params_pixel_size_entry.get().replace('E', 'e')) }       
+            'width' : int(self.sensor_params_width_entry.get()), 
+            'height' : int(self.sensor_params_height_entry.get()), 
+            'pixel size' : float(self.sensor_params_pixel_size_entry.get().replace('E', 'e')) 
+        }       
            
         # Camera Coordinates
         self.data['camera coordinates'] = {
-            'x' : float(self.camera_corrdinates_x_entry.get().replace('E', 'e')), 'y' : float(self.camera_corrdinates_y_entry.get().replace('E', 'e')), 'z' : float(self.camera_corrdinates_z_entry.get().replace('E', 'e'))
+            'x' : float(self.camera_corrdinates_x_entry.get().replace('E', 'e')), 
+            'y' : float(self.camera_corrdinates_y_entry.get().replace('E', 'e')), 
+            'z' : float(self.camera_corrdinates_z_entry.get().replace('E', 'e'))
         }
            
         # Pixel Coordinates
         self.data['pixel coordinates'] = {
-            'x' : float(self.pixel_coordinate_x_entry.get().replace('E', 'e')), 'y' : float(self.pixel_coordinate_y_entry.get().replace('E', 'e'))
+            'x' : float(self.pixel_coordinate_x_entry.get().replace('E', 'e')), 
+            'y' : float(self.pixel_coordinate_y_entry.get().replace('E', 'e'))
         }
            
         return
@@ -426,6 +461,40 @@ class W2CTransform():
         """ 
         Write data from memory to entry.
         """
+        # Pose
+        self.camera_pose_pitch_entry.delete(0, tk.END)
+        self.camera_pose_yaw_entry.delete(0, tk.END)
+        self.camera_pose_roll_entry.delete(0, tk.END)
+        
+        self.camera_pose_pitch_entry.insert(0, self.data['camera pose']['pitch'])
+        self.camera_pose_yaw_entry.insert(0, self.data['camera pose']['yaw'])
+        self.camera_pose_roll_entry.insert(0, self.data['camera pose']['roll'])
+        
+        # Fitting funcion coefficients
+        self.fitting_func_coefs_x5_entry.delete(0, tk.END)
+        self.fitting_func_coefs_x4_entry.delete(0, tk.END)
+        self.fitting_func_coefs_x3_entry.delete(0, tk.END)
+        self.fitting_func_coefs_x2_entry.delete(0, tk.END)
+        self.fitting_func_coefs_x1_entry.delete(0, tk.END)
+        self.fitting_func_coefs_x0_entry.delete(0, tk.END)
+        
+        self.fitting_func_coefs_x5_entry.insert(0, self.data['fitting func coefs']['x5'])
+        self.fitting_func_coefs_x4_entry.insert(0, self.data['fitting func coefs']['x4'])
+        self.fitting_func_coefs_x3_entry.insert(0, self.data['fitting func coefs']['x3'])
+        self.fitting_func_coefs_x2_entry.insert(0, self.data['fitting func coefs']['x2'])
+        self.fitting_func_coefs_x1_entry.insert(0, self.data['fitting func coefs']['x1'])
+        self.fitting_func_coefs_x0_entry.insert(0, self.data['fitting func coefs']['x0'])
+        
+        # Sensor params
+        self.sensor_params_width_entry.delete(0, tk.END)
+        self.sensor_params_height_entry.delete(0, tk.END)
+        self.sensor_params_pixel_size_entry.delete(0, tk.END)
+        
+        self.sensor_params_width_entry.insert(0, self.data['sensor params']['width'])
+        self.sensor_params_height_entry.insert(0, self.data['sensor params']['height'])
+        self.sensor_params_pixel_size_entry.insert(0, self.data['sensor params']['pixel size'])
+        
+        # Positive mode
         if self.calculate_mode_positive:
             # World coordinates
             self.world_coordinate_x_entry.delete(0, tk.END)
@@ -435,39 +504,6 @@ class W2CTransform():
             self.world_coordinate_x_entry.insert(0, self.data['world coordinates']['x'])
             self.world_coordinate_y_entry.insert(0, self.data['world coordinates']['y'])
             self.world_coordinate_z_entry.insert(0, self.data['world coordinates']['z'])
-            
-            # Pose
-            self.camera_pose_pitch_entry.delete(0, tk.END)
-            self.camera_pose_yaw_entry.delete(0, tk.END)
-            self.camera_pose_roll_entry.delete(0, tk.END)
-            
-            self.camera_pose_pitch_entry.insert(0, self.data['camera pose']['pitch'])
-            self.camera_pose_yaw_entry.insert(0, self.data['camera pose']['yaw'])
-            self.camera_pose_roll_entry.insert(0, self.data['camera pose']['roll'])
-            
-            # Fitting funcion coefficients
-            self.fitting_func_coefs_x5_entry.delete(0, tk.END)
-            self.fitting_func_coefs_x4_entry.delete(0, tk.END)
-            self.fitting_func_coefs_x3_entry.delete(0, tk.END)
-            self.fitting_func_coefs_x2_entry.delete(0, tk.END)
-            self.fitting_func_coefs_x1_entry.delete(0, tk.END)
-            self.fitting_func_coefs_x0_entry.delete(0, tk.END)
-            
-            self.fitting_func_coefs_x5_entry.insert(0, self.data['fitting func coefs']['x5'])
-            self.fitting_func_coefs_x4_entry.insert(0, self.data['fitting func coefs']['x4'])
-            self.fitting_func_coefs_x3_entry.insert(0, self.data['fitting func coefs']['x3'])
-            self.fitting_func_coefs_x2_entry.insert(0, self.data['fitting func coefs']['x2'])
-            self.fitting_func_coefs_x1_entry.insert(0, self.data['fitting func coefs']['x1'])
-            self.fitting_func_coefs_x0_entry.insert(0, self.data['fitting func coefs']['x0'])
-            
-            # Sensor params
-            self.sensor_params_width_entry.delete(0, tk.END)
-            self.sensor_params_height_entry.delete(0, tk.END)
-            self.sensor_params_pixel_size_entry.delete(0, tk.END)
-            
-            self.sensor_params_width_entry.insert(0, self.data['sensor params']['width'])
-            self.sensor_params_height_entry.insert(0, self.data['sensor params']['height'])
-            self.sensor_params_pixel_size_entry.insert(0, self.data['sensor params']['pixel size'])
             
             # Camera coordinates
             self.camera_corrdinates_x_entry.config(state='normal')
@@ -499,6 +535,7 @@ class W2CTransform():
             self.pixel_coordinate_x_entry.config(state='readonly')
             self.pixel_coordinate_y_entry.config(state='readonly')
         
+        # Reverse mode
         else:
             # World coordinates
             self.world_coordinate_x_entry.config(state='normal')
@@ -517,40 +554,11 @@ class W2CTransform():
             self.world_coordinate_y_entry.config(state='readonly')
             self.world_coordinate_z_entry.config(state='readonly')
             
-            # Pose
-            self.camera_pose_pitch_entry.delete(0, tk.END)
-            self.camera_pose_yaw_entry.delete(0, tk.END)
-            self.camera_pose_roll_entry.delete(0, tk.END)
-            
-            self.camera_pose_pitch_entry.insert(0, self.data['camera pose']['pitch'])
-            self.camera_pose_yaw_entry.insert(0, self.data['camera pose']['yaw'])
-            self.camera_pose_roll_entry.insert(0, self.data['camera pose']['roll'])
-            
-            # Fitting funcion coefficients
-            self.fitting_func_coefs_x5_entry.delete(0, tk.END)
-            self.fitting_func_coefs_x4_entry.delete(0, tk.END)
-            self.fitting_func_coefs_x3_entry.delete(0, tk.END)
-            self.fitting_func_coefs_x2_entry.delete(0, tk.END)
-            self.fitting_func_coefs_x1_entry.delete(0, tk.END)
-            self.fitting_func_coefs_x0_entry.delete(0, tk.END)
-            
-            self.fitting_func_coefs_x5_entry.insert(0, self.data['fitting func coefs']['x5'])
-            self.fitting_func_coefs_x4_entry.insert(0, self.data['fitting func coefs']['x4'])
-            self.fitting_func_coefs_x3_entry.insert(0, self.data['fitting func coefs']['x3'])
-            self.fitting_func_coefs_x2_entry.insert(0, self.data['fitting func coefs']['x2'])
-            self.fitting_func_coefs_x1_entry.insert(0, self.data['fitting func coefs']['x1'])
-            self.fitting_func_coefs_x0_entry.insert(0, self.data['fitting func coefs']['x0'])
-            
-            # Sensor params
-            self.sensor_params_width_entry.delete(0, tk.END)
-            self.sensor_params_height_entry.delete(0, tk.END)
-            self.sensor_params_pixel_size_entry.delete(0, tk.END)
-            
-            self.sensor_params_width_entry.insert(0, self.data['sensor params']['width'])
-            self.sensor_params_height_entry.insert(0, self.data['sensor params']['height'])
-            self.sensor_params_pixel_size_entry.insert(0, self.data['sensor params']['pixel size'])
-            
             # Camera coordinates
+            self.camera_corrdinates_x_entry.config(state='normal')
+            self.camera_corrdinates_y_entry.config(state='normal')
+            self.camera_corrdinates_z_entry.config(state='normal')
+            
             self.camera_corrdinates_x_entry.delete(0, tk.END)
             self.camera_corrdinates_y_entry.delete(0, tk.END)
             self.camera_corrdinates_z_entry.delete(0, tk.END)
@@ -559,6 +567,10 @@ class W2CTransform():
             self.camera_corrdinates_y_entry.insert(0, self.data['camera coordinates']['y'])
             self.camera_corrdinates_z_entry.insert(0, self.data['camera coordinates']['z'])
             
+            self.camera_corrdinates_x_entry.config(state='readonly')
+            self.camera_corrdinates_y_entry.config(state='readonly')
+            self.camera_corrdinates_z_entry.config(state='readonly')
+            
             # Pixel coordinates
             self.pixel_coordinate_x_entry.delete(0, tk.END)
             self.pixel_coordinate_y_entry.delete(0, tk.END)
@@ -566,6 +578,64 @@ class W2CTransform():
             self.pixel_coordinate_x_entry.insert(0, self.data['pixel coordinates']['x'])
             self.pixel_coordinate_y_entry.insert(0, self.data['pixel coordinates']['y'])
             
+        return
+        
+    def onclick_button_lock(self):
+        self.lock()
+        return
+    
+    def lock(self):
+        # Lock camera pose
+        self.camera_pose_pitch_entry.config(state='readonly')
+        self.camera_pose_yaw_entry.config(state='readonly')
+        self.camera_pose_roll_entry.config(state='readonly')
+        
+        # Lock Fit Coefs
+        self.fitting_func_coefs_x5_entry.config(state='readonly')
+        self.fitting_func_coefs_x4_entry.config(state='readonly')
+        self.fitting_func_coefs_x3_entry.config(state='readonly')
+        self.fitting_func_coefs_x2_entry.config(state='readonly')
+        self.fitting_func_coefs_x1_entry.config(state='readonly')
+        self.fitting_func_coefs_x0_entry.config(state='readonly')
+        
+        # Lock Sensor Params
+        self.sensor_params_width_entry.config(state='readonly')
+        self.sensor_params_height_entry.config(state='readonly')
+        self.sensor_params_pixel_size_entry.config(state='readonly')
+        
+        # Switch button state
+        self.unlock_button.config(state='active')
+        self.lock_button.config(state='disabled')
+        
+        return
+    
+    def onclick_button_unlock(self):
+        self.unlock()
+        return
+        
+    def unlock(self):
+        # Unlock camera pose
+        self.camera_pose_pitch_entry.config(state='normal')
+        self.camera_pose_yaw_entry.config(state='normal')
+        self.camera_pose_roll_entry.config(state='normal')
+        
+        # Unlock Fit Coefs
+        self.fitting_func_coefs_x5_entry.config(state='normal')
+        self.fitting_func_coefs_x4_entry.config(state='normal')
+        self.fitting_func_coefs_x3_entry.config(state='normal')
+        self.fitting_func_coefs_x2_entry.config(state='normal')
+        self.fitting_func_coefs_x1_entry.config(state='normal')
+        self.fitting_func_coefs_x0_entry.config(state='normal')
+        
+        # Unlock Sensor Params
+        self.sensor_params_width_entry.config(state='normal')
+        self.sensor_params_height_entry.config(state='normal')
+        self.sensor_params_pixel_size_entry.config(state='normal')
+        
+        # Switch button state
+        self.unlock_button.config(state='disabled')
+        self.lock_button.config(state='active')
+        
         return
         
     def start(self):
