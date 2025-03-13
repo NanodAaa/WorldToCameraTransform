@@ -1,6 +1,6 @@
 # W2CTransform
 
-# 软件界面
+# 界面
 ![interface](images/interface.png)
 ## 参数
 - P_w: 世界坐标 (X, Y, Z)
