@@ -23,6 +23,7 @@ class W2CTransform():
     data = {
         'world coordinates' : { 'x' : '', 'y' : '', 'z' : '' },
         'fitting func coefs' : { 'x5' : '', 'x4' : '', 'x3' : '', 'x2' : '', 'x1' : '', 'x0' : '' },
+        'fitting func coefs reverse' : { 'x5' : '', 'x4' : '', 'x3' : '', 'x2' : '', 'x1' : '', 'x0' : '' },
         'camera pose' : { 'pitch' : '', 'yaw' : '', 'roll' : '' },
         'sensor params' : { 'width' : '', 'height' : '', 'pixel size' : '' },
         'camera coordinates' : { 'x' : '', 'y' : '', 'z' : '' },
@@ -136,92 +137,126 @@ class W2CTransform():
         self.fitting_func_coefs_x0_entry.insert(0, self.data['fitting func coefs']['x0'])
         self.entry_list.append(self.fitting_func_coefs_x0_entry)
         
+        # Fitting Function Coefficients Reverse
+        self.fitting_func_coefs_reverse_label = tk.Label(self.init_window_name, text='FitCoeR(X5>0): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
+        self.fitting_func_coefs_reverse_label.grid(row=3, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
+        
+        self.fitting_func_coefs_reverse_x5_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
+        self.fitting_func_coefs_reverse_x5_entry.grid(row=3, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_reverse_x5_entry.insert(0, self.data['fitting func coefs reverse']['x5'])
+        self.entry_list.append(self.fitting_func_coefs_reverse_x5_entry)
+        
+        self.fitting_func_coefs_reverse_x4_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
+        self.fitting_func_coefs_reverse_x4_entry.grid(row=3, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_reverse_x4_entry.insert(0, self.data['fitting func coefs reverse']['x4'])
+        self.entry_list.append(self.fitting_func_coefs_reverse_x4_entry)
+        
+        self.fitting_func_coefs_reverse_x3_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
+        self.fitting_func_coefs_reverse_x3_entry.grid(row=3, column=3, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_reverse_x3_entry.insert(0, self.data['fitting func coefs reverse']['x3'])
+        self.entry_list.append(self.fitting_func_coefs_reverse_x3_entry)
+        
+        self.fitting_func_coefs_reverse_x2_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
+        self.fitting_func_coefs_reverse_x2_entry.grid(row=3, column=4, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_reverse_x2_entry.insert(0, self.data['fitting func coefs reverse']['x2'])
+        self.entry_list.append(self.fitting_func_coefs_reverse_x2_entry)
+        
+        self.fitting_func_coefs_reverse_x1_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
+        self.fitting_func_coefs_reverse_x1_entry.grid(row=3, column=5, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_reverse_x1_entry.insert(0, self.data['fitting func coefs reverse']['x1'])
+        self.entry_list.append(self.fitting_func_coefs_reverse_x1_entry)
+        
+        self.fitting_func_coefs_reverse_x0_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
+        self.fitting_func_coefs_reverse_x0_entry.grid(row=3, column=6, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_reverse_x0_entry.insert(0, self.data['fitting func coefs reverse']['x0'])
+        self.entry_list.append(self.fitting_func_coefs_reverse_x0_entry)
+        
         # Sensor Params
         self.sensor_params_label = tk.Label(self.init_window_name, text='SenPrms(WHP): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
-        self.sensor_params_label.grid(row=3, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
+        self.sensor_params_label.grid(row=4, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
         
         self.sensor_params_width_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.sensor_params_width_entry.grid(row=3, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.sensor_params_width_entry.grid(row=4, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.sensor_params_width_entry.insert(0, self.data['sensor params']['width'])
         self.entry_list.append(self.sensor_params_width_entry)
         
         self.sensor_params_height_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.sensor_params_height_entry.grid(row=3, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.sensor_params_height_entry.grid(row=4, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.sensor_params_height_entry.insert(0, self.data['sensor params']['height'])
         self.entry_list.append(self.sensor_params_height_entry)
         
         self.sensor_params_pixel_size_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.sensor_params_pixel_size_entry.grid(row=3, column=3, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.sensor_params_pixel_size_entry.grid(row=4, column=3, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.sensor_params_pixel_size_entry.insert(0, self.data['sensor params']['pixel size'])
         self.entry_list.append(self.sensor_params_pixel_size_entry)
         
         # camera Coordinates
         self.camera_corrdinates_label = tk.Label(self.init_window_name, text='P_c(XYZ): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
-        self.camera_corrdinates_label.grid(row=4, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
+        self.camera_corrdinates_label.grid(row=5, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
         
         self.camera_corrdinates_x_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.camera_corrdinates_x_entry.grid(row=4, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.camera_corrdinates_x_entry.grid(row=5, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.camera_corrdinates_x_entry.insert(0, self.data['camera coordinates']['x'])
         self.camera_corrdinates_x_entry.config(state='readonly') # Set entry to read only
         self.entry_list.append(self.camera_corrdinates_x_entry)
         
         self.camera_corrdinates_y_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.camera_corrdinates_y_entry.grid(row=4, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.camera_corrdinates_y_entry.grid(row=5, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.camera_corrdinates_y_entry.insert(0, self.data['camera coordinates']['y'])
         self.camera_corrdinates_y_entry.config(state='readonly') # Set entry to read only
         self.entry_list.append(self.camera_corrdinates_y_entry)
         
         self.camera_corrdinates_z_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.camera_corrdinates_z_entry.grid(row=4, column=3, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.camera_corrdinates_z_entry.grid(row=5, column=3, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.camera_corrdinates_z_entry.insert(0, self.data['camera coordinates']['z'])
         self.camera_corrdinates_z_entry.config(state='readonly') # Set entry to read only
         self.entry_list.append(self.camera_corrdinates_z_entry)
         
         # Pixel Coordinates
         self.pixel_coordinates_label = tk.Label(self.init_window_name, text='P_p(XY): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
-        self.pixel_coordinates_label.grid(row=5, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
+        self.pixel_coordinates_label.grid(row=6, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
         
         self.pixel_coordinate_x_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.pixel_coordinate_x_entry.grid(row=5, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.pixel_coordinate_x_entry.grid(row=6, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.pixel_coordinate_x_entry.insert(0, self.data['pixel coordinates']['x'])
         self.pixel_coordinate_x_entry.config(state='readonly') # Set entry to read only
         self.entry_list.append(self.pixel_coordinate_x_entry)
         
         self.pixel_coordinate_y_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.pixel_coordinate_y_entry.grid(row=5, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.pixel_coordinate_y_entry.grid(row=6, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.pixel_coordinate_y_entry.insert(0, self.data['pixel coordinates']['y'])
         self.pixel_coordinate_y_entry.config(state='readonly') # Set entry to read only
         self.entry_list.append(self.pixel_coordinate_y_entry)
         
         # Calculate Button
         self.calculate_button = tk.Button(self.init_window_name, text='Calculate', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_calculate)
-        self.calculate_button.grid(row=6, column=0, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
+        self.calculate_button.grid(row=7, column=0, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
                 
         # Save Button
         self.save_button = tk.Button(self.init_window_name, text='Save', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_save)
-        self.save_button.grid(row=6, column=1, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])        
+        self.save_button.grid(row=7, column=1, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])        
 
         # Positive Button
         self.positive_button = tk.Button(self.init_window_name, text='Positive', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_positive)
-        self.positive_button.grid(row=6, column=2, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
+        self.positive_button.grid(row=7, column=2, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
         self.positive_button.config(state='disabled')
         
         # Reverse Button
         self.reverse_button = tk.Button(self.init_window_name, text='Reverse', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_reverse)
-        self.reverse_button.grid(row=6, column=3, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])        
+        self.reverse_button.grid(row=7, column=3, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])        
                 
         # Lock Button
         self.lock_button = tk.Button(self.init_window_name, text='Lock', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_lock)
-        self.lock_button.grid(row=7, column=0, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
+        self.lock_button.grid(row=8, column=0, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
         self.lock_button.config(state='disabled')
         
         # Unlock Button
         self.unlock_button = tk.Button(self.init_window_name, text='Unlock', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_unlock)
-        self.unlock_button.grid(row=7, column=1, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
+        self.unlock_button.grid(row=8, column=1, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
         
         # Message Label
         self.message_label = tk.Label(self.init_window_name, text='Welcome!', font=self.label_format_dict['font'], width=15, foreground='red', borderwidth=2, relief="solid")
-        self.message_label.grid(row=6, column=4, columnspan=2, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky='wesn')
+        self.message_label.grid(row=7, column=4, columnspan=2, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky='wesn')
                 
     def onclick_button_positive(self):
         self.positive()
@@ -267,12 +302,10 @@ class W2CTransform():
         
         if self.save_data_to_json() == -1:
             return
-
-        
+  
         if self.refresh_data_in_gui() == -1:
             return
        
-        
         self.message_label.config(text='Data saved!')
         return
                 
@@ -343,21 +376,21 @@ class W2CTransform():
         world_coordinates_vector_pitched_yawed = np.dot(yaw_rotate_matrix, world_coordinates_vector_pitched)
         world_coordinates_vector_pitched_yawed_rolled = np.dot(roll_rotate_matrix, world_coordinates_vector_pitched_yawed)
 
-        x_c = float(world_coordinates_vector_pitched_yawed_rolled[0][0])
-        y_c = float(world_coordinates_vector_pitched_yawed_rolled[1][0])
-        z_c = float(world_coordinates_vector_pitched_yawed_rolled[2][0])
+        x_c = round(float(world_coordinates_vector_pitched_yawed_rolled[0][0]), 2)
+        y_c = round(float(world_coordinates_vector_pitched_yawed_rolled[1][0]), 2)
+        z_c = round(float(world_coordinates_vector_pitched_yawed_rolled[2][0]), 2)
         
         # Camera coordinates to Pixel coordinates
         distance = math.sqrt(x_c**2 + y_c**2 + z_c**2) # Distance to nodal point
         angle = math.degrees(math.acos(x_c / distance))
         fitting_func_coefs = [self.data['fitting func coefs']['x5'], self.data['fitting func coefs']['x4'], self.data['fitting func coefs']['x3'], self.data['fitting func coefs']['x2'], self.data['fitting func coefs']['x1'], self.data['fitting func coefs']['x0']]
-        pixel_to_image_center_distance = real_height = np.polyval(fitting_func_coefs, angle)
+        real_height = np.polyval(fitting_func_coefs, angle)
         azimuth_radians = math.atan2(z_c, -y_c)
         azimuth = (math.degrees(azimuth_radians) + 360 ) % 360
         
         pixel_size = self.data['sensor params']['pixel size']
-        x_p = (pixel_to_image_center_distance / pixel_size) * math.cos(azimuth_radians)
-        y_p = (pixel_to_image_center_distance / pixel_size) * math.sin(azimuth_radians)
+        x_p = round((real_height / pixel_size) * math.cos(azimuth_radians), 2)
+        y_p = round((real_height / pixel_size) * math.sin(azimuth_radians), 2)
         
         # Write data to memory
         self.data['camera coordinates'] = { 'x' : x_c, 'y' : y_c, 'z' : z_c }
@@ -371,27 +404,31 @@ class W2CTransform():
         # Pixel coordinates to Camera coordinatess
         x_p = self.data['pixel coordinates']['x']
         y_p = self.data['pixel coordinates']['y']
-        fitting_func_coefs = [
-            self.data['fitting func coefs']['x5'], 
-            self.data['fitting func coefs']['x4'], 
-            self.data['fitting func coefs']['x3'], 
-            self.data['fitting func coefs']['x2'], 
-            self.data['fitting func coefs']['x1'], 
-            self.data['fitting func coefs']['x0']
+        fitting_func_coefs_reverse = [
+            self.data['fitting func coefs reverse']['x5'], 
+            self.data['fitting func coefs reverse']['x4'], 
+            self.data['fitting func coefs reverse']['x3'], 
+            self.data['fitting func coefs reverse']['x2'], 
+            self.data['fitting func coefs reverse']['x1'], 
+            self.data['fitting func coefs reverse']['x0'],
         ]
-        distance = 2000
+        z_c = 2000
         
         real_height = math.sqrt(x_p**2 + y_p**2)
         azimuth_on_sensor = (math.degrees(math.atan2(x_p, -y_p)) + 270) % 360 
-        angle = np.polyval(fitting_func_coefs, real_height)
-        d_on_plane_xy = math.tan(math.radians(angle)) * distance
-        x = d_on_plane_xy * math.sin(math.radians(azimuth_on_sensor))
-        y = d_on_plane_xy * math.cos(math.radians(azimuth_on_sensor))
-        z = distance
+        angle = np.polyval(fitting_func_coefs_reverse, real_height)
+        d_on_plane_xy = math.tan(math.radians(angle)) * z_c
+        x_c = round(d_on_plane_xy * math.sin(math.radians(azimuth_on_sensor)), 2)
+        y_c = round(d_on_plane_xy * math.cos(math.radians(azimuth_on_sensor)), 2)
+        
+        x_p = x_c
+        y_p = y_c
+        z_p = z_c
         
         # Write data to memory
-        self.data['camera coordinates'] = { 'x' : x, 'y' : y, 'z' : z }
-
+        self.data['camera coordinates'] = { 'x' : x_c, 'y' : y_c, 'z' : z_c }
+        self.data['world coordinates'] = {'x' : x_p, 'y' : y_p, 'z' : z_p }
+    
         return
         
     def save_data_from_entry_to_memory(self):      
@@ -413,6 +450,16 @@ class W2CTransform():
             'x2' : float(self.fitting_func_coefs_x2_entry.get().replace('E', 'e')),
             'x1' : float(self.fitting_func_coefs_x1_entry.get().replace('E', 'e')), 
             'x0' : float(self.fitting_func_coefs_x0_entry.get().replace('E', 'e')),
+        }
+        
+        # Fitting Functiong Coefficients Reverse
+        self.data['fitting func coefs reverse'] = { 
+            'x5' : float(self.fitting_func_coefs_reverse_x5_entry.get().replace('E', 'e')), 
+            'x4' : float(self.fitting_func_coefs_reverse_x4_entry.get().replace('E', 'e')),
+            'x3' : float(self.fitting_func_coefs_reverse_x3_entry.get().replace('E', 'e')), 
+            'x2' : float(self.fitting_func_coefs_reverse_x2_entry.get().replace('E', 'e')),
+            'x1' : float(self.fitting_func_coefs_reverse_x1_entry.get().replace('E', 'e')), 
+            'x0' : float(self.fitting_func_coefs_reverse_x0_entry.get().replace('E', 'e')),
         }
         
         # Camera Pose
@@ -485,6 +532,21 @@ class W2CTransform():
         self.fitting_func_coefs_x2_entry.insert(0, self.data['fitting func coefs']['x2'])
         self.fitting_func_coefs_x1_entry.insert(0, self.data['fitting func coefs']['x1'])
         self.fitting_func_coefs_x0_entry.insert(0, self.data['fitting func coefs']['x0'])
+        
+        # Fitting funcion coefficients reverse
+        self.fitting_func_coefs_reverse_x5_entry.delete(0, tk.END)
+        self.fitting_func_coefs_reverse_x4_entry.delete(0, tk.END)
+        self.fitting_func_coefs_reverse_x3_entry.delete(0, tk.END)
+        self.fitting_func_coefs_reverse_x2_entry.delete(0, tk.END)
+        self.fitting_func_coefs_reverse_x1_entry.delete(0, tk.END)
+        self.fitting_func_coefs_reverse_x0_entry.delete(0, tk.END)
+        
+        self.fitting_func_coefs_reverse_x5_entry.insert(0, self.data['fitting func coefs reverse']['x5'])
+        self.fitting_func_coefs_reverse_x4_entry.insert(0, self.data['fitting func coefs reverse']['x4'])
+        self.fitting_func_coefs_reverse_x3_entry.insert(0, self.data['fitting func coefs reverse']['x3'])
+        self.fitting_func_coefs_reverse_x2_entry.insert(0, self.data['fitting func coefs reverse']['x2'])
+        self.fitting_func_coefs_reverse_x1_entry.insert(0, self.data['fitting func coefs reverse']['x1'])
+        self.fitting_func_coefs_reverse_x0_entry.insert(0, self.data['fitting func coefs reverse']['x0'])
         
         # Sensor params
         self.sensor_params_width_entry.delete(0, tk.END)
@@ -599,6 +661,14 @@ class W2CTransform():
         self.fitting_func_coefs_x1_entry.config(state='readonly')
         self.fitting_func_coefs_x0_entry.config(state='readonly')
         
+        # Lock Fit Coefs Reverse
+        self.fitting_func_coefs_reverse_x5_entry.config(state='readonly')
+        self.fitting_func_coefs_reverse_x4_entry.config(state='readonly')
+        self.fitting_func_coefs_reverse_x3_entry.config(state='readonly')
+        self.fitting_func_coefs_reverse_x2_entry.config(state='readonly')
+        self.fitting_func_coefs_reverse_x1_entry.config(state='readonly')
+        self.fitting_func_coefs_reverse_x0_entry.config(state='readonly')
+        
         # Lock Sensor Params
         self.sensor_params_width_entry.config(state='readonly')
         self.sensor_params_height_entry.config(state='readonly')
@@ -627,6 +697,14 @@ class W2CTransform():
         self.fitting_func_coefs_x2_entry.config(state='normal')
         self.fitting_func_coefs_x1_entry.config(state='normal')
         self.fitting_func_coefs_x0_entry.config(state='normal')
+        
+        # Unlock Fit Coefs Reverse
+        self.fitting_func_coefs_reverse_x5_entry.config(state='normal')
+        self.fitting_func_coefs_reverse_x4_entry.config(state='normal')
+        self.fitting_func_coefs_reverse_x3_entry.config(state='normal')
+        self.fitting_func_coefs_reverse_x2_entry.config(state='normal')
+        self.fitting_func_coefs_reverse_x1_entry.config(state='normal')
+        self.fitting_func_coefs_reverse_x0_entry.config(state='normal')
         
         # Unlock Sensor Params
         self.sensor_params_width_entry.config(state='normal')
