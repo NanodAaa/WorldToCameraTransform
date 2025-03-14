@@ -20,6 +20,28 @@ class W2CTransform():
     entry_format_dict = { 'font' : ('consolas', 12), 'padx' : 5, 'pady' : 5, 'sticky' : 'ew', 'width' : 13 }
     button_format_dict = { 'bg' : 'lightblue', 'padx' : 5, 'pady' : 5, 'sticky' : 'ewsn', 'width' : 13 }
     
+    world_coordinates_widgets_postion_dict = {
+        'label' : {'row' : 0, 'column' : 0}, 'x entry' : {'row' : 0, 'column' : 1}, 'y entry' : {'row' : 0, 'column' : 2}, 'z entry' : {'row' : 0, 'column' : 3}}
+    camera_pose_widgets_position_dict = {
+        'label' : {'row' : 1, 'column' : 0}, 'pitch entry' : {'row' : 1, 'column' : 1}, 'yaw entry' : {'row' : 1, 'column' : 2}, 'roll entry' : {'row' : 1, 'column' : 3}}
+    fitting_func_coefs_widgets_position_dict = {
+        'label' : {'row' : 2, 'column' : 0}, 'x5 entry' : {'row' : 2, 'column' : 1}, 'x4 entry' : {'row' : 2, 'column' : 2}, 
+        'x3 entry' : {'row' : 2, 'column' : 3}, 'x2 entry' : {'row' : 2, 'column' : 4}, 'x1 entry' : {'row' : 2, 'column' : 5}, 'x0 entry' : {'row' : 2, 'column' : 6}}
+    fitting_func_coefs_reverse_widgets_position_dict = {
+        'label' : {'row' : 3, 'column' : 0}, 'x5 entry' : {'row' : 3, 'column' : 1}, 'x4 entry' : {'row' : 3, 'column' : 2}, 
+        'x3 entry' : {'row' : 3, 'column' : 3}, 'x2 entry' : {'row' : 3, 'column' : 4}, 'x1 entry' : {'row' : 3, 'column' : 5}, 'x0 entry' : {'row' : 3, 'column' : 6}}
+    sensor_params_widgets_position_dict = {
+        'label' : {'row' : 4, 'column' : 0}, 'width entry' : {'row' : 4, 'column' : 1}, 'height entry' : {'row' : 4, 'column' : 2}, 'pixel size entry' : {'row' : 4, 'column' : 3}}
+    camera_coordinates_widgets_position_dict = {
+        'label' : {'row' : 5, 'column' : 0}, 'x entry' : {'row' : 5, 'column' : 1}, 'y entry' : {'row' : 5, 'column' : 2}, 'z entry' : {'row' : 5, 'column' : 3}}
+    pixel_coordinates_widgets_position_dict = {
+        'label' : {'row' : 6, 'column' : 0}, 'x entry' : {'row' : 6, 'column' : 1}, 'y entry' : {'row' : 6, 'column' : 2}}
+    button_widgets_position_dict = {
+        'calculate' : {'row' : 7, 'column' : 0}, 'save' : {'row' : 7, 'column' : 1}, 'positive' : {'row' : 7, 'column' : 2}, 
+        'reverse' : {'row' : 7, 'column' : 3}, 'lock' : {'row' : 8, 'column' : 0}, 'unlock' : {'row' : 8, 'column' : 1}}
+    label_widgets_position_dict = {
+        'message' : {'row' : 8, 'column' : 2}}
+    
     data = {
         'world coordinates' : { 'x' : '', 'y' : '', 'z' : '' },
         'fitting func coefs' : { 'x5' : '', 'x4' : '', 'x3' : '', 'x2' : '', 'x1' : '', 'x0' : '' },
@@ -62,20 +84,20 @@ class W2CTransform():
         
         # World Coordinates
         self.world_coordinate_label = tk.Label(self.init_window_name, text='P_w(XYZ): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
-        self.world_coordinate_label.grid(row=0, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
+        self.world_coordinate_label.grid(row=self.world_coordinates_widgets_postion_dict['label']['row'], column=self.world_coordinates_widgets_postion_dict['label']['column'], padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
 
         self.world_coordinate_x_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.world_coordinate_x_entry.grid(row=0, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.world_coordinate_x_entry.grid(row=self.world_coordinates_widgets_postion_dict['x entry']['row'], column=self.world_coordinates_widgets_postion_dict['x entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.world_coordinate_x_entry.insert(0, self.data['world coordinates']['x'])
         self.entry_list.append(self.world_coordinate_x_entry)
         
         self.world_coordinate_y_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.world_coordinate_y_entry.grid(row=0, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.world_coordinate_y_entry.grid(row=self.world_coordinates_widgets_postion_dict['y entry']['row'], column=self.world_coordinates_widgets_postion_dict['y entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.world_coordinate_y_entry.insert(0, self.data['world coordinates']['y'])
         self.entry_list.append(self.world_coordinate_y_entry)
         
         self.world_coordinate_z_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.world_coordinate_z_entry.grid(row=0, column=3, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.world_coordinate_z_entry.grid(row=self.world_coordinates_widgets_postion_dict['z entry']['row'], column=self.world_coordinates_widgets_postion_dict['z entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.world_coordinate_z_entry.insert(0, self.data['world coordinates']['z'])
         self.entry_list.append(self.world_coordinate_z_entry)
         
@@ -86,177 +108,177 @@ class W2CTransform():
         
         # Camera Pose
         self.camera_pose_label = tk.Label(self.init_window_name, text='Pose(PYR): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
-        self.camera_pose_label.grid(row=1, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
+        self.camera_pose_label.grid(row=self.camera_pose_widgets_position_dict['label']['row'], column=self.camera_pose_widgets_position_dict['label']['column'], padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
         
         self.camera_pose_pitch_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.camera_pose_pitch_entry.grid(row=1, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.camera_pose_pitch_entry.grid(row=self.camera_pose_widgets_position_dict['pitch entry']['row'], column=self.camera_pose_widgets_position_dict['pitch entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.camera_pose_pitch_entry.insert(0, self.data['camera pose']['pitch'])
         self.entry_list.append(self.camera_pose_pitch_entry)
         
         self.camera_pose_yaw_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.camera_pose_yaw_entry.grid(row=1, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.camera_pose_yaw_entry.grid(row=self.camera_pose_widgets_position_dict['yaw entry']['row'], column=self.camera_pose_widgets_position_dict['yaw entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.camera_pose_yaw_entry.insert(0, self.data['camera pose']['yaw'])
         self.entry_list.append(self.camera_pose_yaw_entry)
         
         self.camera_pose_roll_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.camera_pose_roll_entry.grid(row=1, column=3, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.camera_pose_roll_entry.grid(row=self.camera_pose_widgets_position_dict['roll entry']['row'], column=self.camera_pose_widgets_position_dict['roll entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.camera_pose_roll_entry.insert(0, self.data['camera pose']['roll'])
         self.entry_list.append(self.camera_pose_roll_entry)
         
         # Fitting Function Coefficients
         self.fitting_func_coefs_label = tk.Label(self.init_window_name, text='FitCoe(X5>0): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
-        self.fitting_func_coefs_label.grid(row=2, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
+        self.fitting_func_coefs_label.grid(row=self.fitting_func_coefs_widgets_position_dict['label']['row'], column=self.fitting_func_coefs_widgets_position_dict['label']['column'], padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
         
         self.fitting_func_coefs_x5_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.fitting_func_coefs_x5_entry.grid(row=2, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_x5_entry.grid(row=self.fitting_func_coefs_widgets_position_dict['x5 entry']['row'], column=self.fitting_func_coefs_widgets_position_dict['x5 entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.fitting_func_coefs_x5_entry.insert(0, self.data['fitting func coefs']['x5'])
         self.entry_list.append(self.fitting_func_coefs_x5_entry)
         
         self.fitting_func_coefs_x4_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.fitting_func_coefs_x4_entry.grid(row=2, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_x4_entry.grid(row=self.fitting_func_coefs_widgets_position_dict['x4 entry']['row'], column=self.fitting_func_coefs_widgets_position_dict['x4 entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.fitting_func_coefs_x4_entry.insert(0, self.data['fitting func coefs']['x4'])
         self.entry_list.append(self.fitting_func_coefs_x4_entry)
         
         self.fitting_func_coefs_x3_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.fitting_func_coefs_x3_entry.grid(row=2, column=3, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_x3_entry.grid(row=self.fitting_func_coefs_widgets_position_dict['x3 entry']['row'], column=self.fitting_func_coefs_widgets_position_dict['x3 entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.fitting_func_coefs_x3_entry.insert(0, self.data['fitting func coefs']['x3'])
         self.entry_list.append(self.fitting_func_coefs_x3_entry)
         
         self.fitting_func_coefs_x2_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.fitting_func_coefs_x2_entry.grid(row=2, column=4, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_x2_entry.grid(row=self.fitting_func_coefs_widgets_position_dict['x2 entry']['row'], column=self.fitting_func_coefs_widgets_position_dict['x2 entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.fitting_func_coefs_x2_entry.insert(0, self.data['fitting func coefs']['x2'])
         self.entry_list.append(self.fitting_func_coefs_x2_entry)
         
         self.fitting_func_coefs_x1_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.fitting_func_coefs_x1_entry.grid(row=2, column=5, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_x1_entry.grid(row=self.fitting_func_coefs_widgets_position_dict['x1 entry']['row'], column=self.fitting_func_coefs_widgets_position_dict['x1 entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.fitting_func_coefs_x1_entry.insert(0, self.data['fitting func coefs']['x1'])
         self.entry_list.append(self.fitting_func_coefs_x1_entry)
         
         self.fitting_func_coefs_x0_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.fitting_func_coefs_x0_entry.grid(row=2, column=6, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_x0_entry.grid(row=self.fitting_func_coefs_widgets_position_dict['x0 entry']['row'], column=self.fitting_func_coefs_widgets_position_dict['x0 entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.fitting_func_coefs_x0_entry.insert(0, self.data['fitting func coefs']['x0'])
         self.entry_list.append(self.fitting_func_coefs_x0_entry)
         
         # Fitting Function Coefficients Reverse
         self.fitting_func_coefs_reverse_label = tk.Label(self.init_window_name, text='FitCoeR(X5>0): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
-        self.fitting_func_coefs_reverse_label.grid(row=3, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
+        self.fitting_func_coefs_reverse_label.grid(row=self.fitting_func_coefs_reverse_widgets_position_dict['label']['row'], column=self.fitting_func_coefs_reverse_widgets_position_dict['label']['column'], padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
         
         self.fitting_func_coefs_reverse_x5_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.fitting_func_coefs_reverse_x5_entry.grid(row=3, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_reverse_x5_entry.grid(row=self.fitting_func_coefs_reverse_widgets_position_dict['x5 entry']['row'], column=self.fitting_func_coefs_reverse_widgets_position_dict['x5 entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.fitting_func_coefs_reverse_x5_entry.insert(0, self.data['fitting func coefs reverse']['x5'])
         self.entry_list.append(self.fitting_func_coefs_reverse_x5_entry)
         
         self.fitting_func_coefs_reverse_x4_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.fitting_func_coefs_reverse_x4_entry.grid(row=3, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_reverse_x4_entry.grid(row=self.fitting_func_coefs_reverse_widgets_position_dict['x4 entry']['row'], column=self.fitting_func_coefs_reverse_widgets_position_dict['x4 entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.fitting_func_coefs_reverse_x4_entry.insert(0, self.data['fitting func coefs reverse']['x4'])
         self.entry_list.append(self.fitting_func_coefs_reverse_x4_entry)
         
         self.fitting_func_coefs_reverse_x3_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.fitting_func_coefs_reverse_x3_entry.grid(row=3, column=3, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_reverse_x3_entry.grid(row=self.fitting_func_coefs_reverse_widgets_position_dict['x3 entry']['row'], column=self.fitting_func_coefs_reverse_widgets_position_dict['x3 entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.fitting_func_coefs_reverse_x3_entry.insert(0, self.data['fitting func coefs reverse']['x3'])
         self.entry_list.append(self.fitting_func_coefs_reverse_x3_entry)
         
         self.fitting_func_coefs_reverse_x2_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.fitting_func_coefs_reverse_x2_entry.grid(row=3, column=4, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_reverse_x2_entry.grid(row=self.fitting_func_coefs_reverse_widgets_position_dict['x2 entry']['row'], column=self.fitting_func_coefs_reverse_widgets_position_dict['x2 entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.fitting_func_coefs_reverse_x2_entry.insert(0, self.data['fitting func coefs reverse']['x2'])
         self.entry_list.append(self.fitting_func_coefs_reverse_x2_entry)
         
         self.fitting_func_coefs_reverse_x1_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.fitting_func_coefs_reverse_x1_entry.grid(row=3, column=5, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_reverse_x1_entry.grid(row=self.fitting_func_coefs_reverse_widgets_position_dict['x1 entry']['row'], column=self.fitting_func_coefs_reverse_widgets_position_dict['x1 entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.fitting_func_coefs_reverse_x1_entry.insert(0, self.data['fitting func coefs reverse']['x1'])
         self.entry_list.append(self.fitting_func_coefs_reverse_x1_entry)
         
         self.fitting_func_coefs_reverse_x0_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.fitting_func_coefs_reverse_x0_entry.grid(row=3, column=6, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.fitting_func_coefs_reverse_x0_entry.grid(row=self.fitting_func_coefs_reverse_widgets_position_dict['x0 entry']['row'], column=self.fitting_func_coefs_reverse_widgets_position_dict['x0 entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.fitting_func_coefs_reverse_x0_entry.insert(0, self.data['fitting func coefs reverse']['x0'])
         self.entry_list.append(self.fitting_func_coefs_reverse_x0_entry)
         
         # Sensor Params
         self.sensor_params_label = tk.Label(self.init_window_name, text='SenPrms(WHP): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
-        self.sensor_params_label.grid(row=4, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
+        self.sensor_params_label.grid(row=self.sensor_params_widgets_position_dict['label']['row'], column=self.sensor_params_widgets_position_dict['label']['column'], padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
         
         self.sensor_params_width_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.sensor_params_width_entry.grid(row=4, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.sensor_params_width_entry.grid(row=self.sensor_params_widgets_position_dict['width entry']['row'], column=self.sensor_params_widgets_position_dict['width entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.sensor_params_width_entry.insert(0, self.data['sensor params']['width'])
         self.entry_list.append(self.sensor_params_width_entry)
         
         self.sensor_params_height_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.sensor_params_height_entry.grid(row=4, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.sensor_params_height_entry.grid(row=self.sensor_params_widgets_position_dict['height entry']['row'], column=self.sensor_params_widgets_position_dict['height entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.sensor_params_height_entry.insert(0, self.data['sensor params']['height'])
         self.entry_list.append(self.sensor_params_height_entry)
         
         self.sensor_params_pixel_size_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.sensor_params_pixel_size_entry.grid(row=4, column=3, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.sensor_params_pixel_size_entry.grid(row=self.sensor_params_widgets_position_dict['pixel size entry']['row'], column=self.sensor_params_widgets_position_dict['pixel size entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.sensor_params_pixel_size_entry.insert(0, self.data['sensor params']['pixel size'])
         self.entry_list.append(self.sensor_params_pixel_size_entry)
         
         # camera Coordinates
         self.camera_corrdinates_label = tk.Label(self.init_window_name, text='P_c(XYZ): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
-        self.camera_corrdinates_label.grid(row=5, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
+        self.camera_corrdinates_label.grid(row=self.camera_coordinates_widgets_position_dict['label']['row'], column=self.camera_coordinates_widgets_position_dict['label']['column'], padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
         
         self.camera_corrdinates_x_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.camera_corrdinates_x_entry.grid(row=5, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.camera_corrdinates_x_entry.grid(row=self.camera_coordinates_widgets_position_dict['x entry']['row'], column=self.camera_coordinates_widgets_position_dict['x entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.camera_corrdinates_x_entry.insert(0, self.data['camera coordinates']['x'])
         self.camera_corrdinates_x_entry.config(state='readonly') # Set entry to read only
         self.entry_list.append(self.camera_corrdinates_x_entry)
         
         self.camera_corrdinates_y_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.camera_corrdinates_y_entry.grid(row=5, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.camera_corrdinates_y_entry.grid(row=self.camera_coordinates_widgets_position_dict['y entry']['row'], column=self.camera_coordinates_widgets_position_dict['y entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.camera_corrdinates_y_entry.insert(0, self.data['camera coordinates']['y'])
         self.camera_corrdinates_y_entry.config(state='readonly') # Set entry to read only
         self.entry_list.append(self.camera_corrdinates_y_entry)
         
         self.camera_corrdinates_z_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.camera_corrdinates_z_entry.grid(row=5, column=3, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.camera_corrdinates_z_entry.grid(row=self.camera_coordinates_widgets_position_dict['z entry']['row'], column=self.camera_coordinates_widgets_position_dict['z entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.camera_corrdinates_z_entry.insert(0, self.data['camera coordinates']['z'])
         self.camera_corrdinates_z_entry.config(state='readonly') # Set entry to read only
         self.entry_list.append(self.camera_corrdinates_z_entry)
         
         # Pixel Coordinates
         self.pixel_coordinates_label = tk.Label(self.init_window_name, text='P_p(XY): ', font=self.label_format_dict['font'], width=self.label_format_dict['width'])
-        self.pixel_coordinates_label.grid(row=6, column=0, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
+        self.pixel_coordinates_label.grid(row=self.pixel_coordinates_widgets_position_dict['label']['row'], column=self.pixel_coordinates_widgets_position_dict['label']['column'], padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky=self.label_format_dict['sticky'])
         
         self.pixel_coordinate_x_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.pixel_coordinate_x_entry.grid(row=6, column=1, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.pixel_coordinate_x_entry.grid(row=self.pixel_coordinates_widgets_position_dict['x entry']['row'], column=self.pixel_coordinates_widgets_position_dict['x entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.pixel_coordinate_x_entry.insert(0, self.data['pixel coordinates']['x'])
         self.pixel_coordinate_x_entry.config(state='readonly') # Set entry to read only
         self.entry_list.append(self.pixel_coordinate_x_entry)
         
         self.pixel_coordinate_y_entry = tk.Entry(self.init_window_name, font=self.entry_format_dict['font'], width=self.entry_format_dict['width'])
-        self.pixel_coordinate_y_entry.grid(row=6, column=2, padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
+        self.pixel_coordinate_y_entry.grid(row=self.pixel_coordinates_widgets_position_dict['y entry']['row'], column=self.pixel_coordinates_widgets_position_dict['y entry']['column'], padx=self.entry_format_dict['padx'], pady=self.entry_format_dict['pady'], sticky=self.entry_format_dict['sticky'])
         self.pixel_coordinate_y_entry.insert(0, self.data['pixel coordinates']['y'])
         self.pixel_coordinate_y_entry.config(state='readonly') # Set entry to read only
         self.entry_list.append(self.pixel_coordinate_y_entry)
         
         # Calculate Button
         self.calculate_button = tk.Button(self.init_window_name, text='Calculate', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_calculate)
-        self.calculate_button.grid(row=7, column=0, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
+        self.calculate_button.grid(row=self.button_widgets_position_dict['calculate']['row'], column=self.button_widgets_position_dict['calculate']['column'], padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
                 
         # Save Button
         self.save_button = tk.Button(self.init_window_name, text='Save', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_save)
-        self.save_button.grid(row=7, column=1, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])        
+        self.save_button.grid(row=self.button_widgets_position_dict['save']['row'], column=self.button_widgets_position_dict['save']['column'], padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])        
 
         # Positive Button
         self.positive_button = tk.Button(self.init_window_name, text='Positive', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_positive)
-        self.positive_button.grid(row=7, column=2, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
+        self.positive_button.grid(row=self.button_widgets_position_dict['positive']['row'], column=self.button_widgets_position_dict['positive']['column'], padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
         self.positive_button.config(state='disabled')
         
         # Reverse Button
         self.reverse_button = tk.Button(self.init_window_name, text='Reverse', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_reverse)
-        self.reverse_button.grid(row=7, column=3, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])        
+        self.reverse_button.grid(row=self.button_widgets_position_dict['reverse']['row'], column=self.button_widgets_position_dict['reverse']['column'], padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])        
                 
         # Lock Button
         self.lock_button = tk.Button(self.init_window_name, text='Lock', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_lock)
-        self.lock_button.grid(row=8, column=0, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
+        self.lock_button.grid(row=self.button_widgets_position_dict['lock']['row'], column=self.button_widgets_position_dict['lock']['column'], padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
         self.lock_button.config(state='disabled')
         
         # Unlock Button
         self.unlock_button = tk.Button(self.init_window_name, text='Unlock', bg=self.button_format_dict['bg'], width=self.button_format_dict['width'], command=self.onclick_button_unlock)
-        self.unlock_button.grid(row=8, column=1, padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
+        self.unlock_button.grid(row=self.button_widgets_position_dict['unlock']['row'], column=self.button_widgets_position_dict['unlock']['column'], padx=self.button_format_dict['padx'], pady=self.button_format_dict['pady'], sticky=self.button_format_dict['sticky'])
         
         # Message Label
         self.message_label = tk.Label(self.init_window_name, text='Welcome!', font=self.label_format_dict['font'], width=15, foreground='red', borderwidth=2, relief="solid")
-        self.message_label.grid(row=7, column=4, columnspan=2, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky='wesn')
+        self.message_label.grid(row=self.label_widgets_position_dict['message']['row'], column=self.label_widgets_position_dict['message']['column'], columnspan=2, padx=self.label_format_dict['padx'], pady=self.label_format_dict['pady'], sticky='wesn')
                 
     def onclick_button_positive(self):
         self.positive()
@@ -412,14 +434,14 @@ class W2CTransform():
             self.data['fitting func coefs reverse']['x1'], 
             self.data['fitting func coefs reverse']['x0'],
         ]
-        z_c = 2000
+        x_c = 2000
         
         real_height = math.sqrt(x_p**2 + y_p**2)
         azimuth_on_sensor = (math.degrees(math.atan2(x_p, -y_p)) + 270) % 360 
         angle = np.polyval(fitting_func_coefs_reverse, real_height)
-        d_on_plane_xy = math.tan(math.radians(angle)) * z_c
-        x_c = round(d_on_plane_xy * math.sin(math.radians(azimuth_on_sensor)), 2)
-        y_c = round(d_on_plane_xy * math.cos(math.radians(azimuth_on_sensor)), 2)
+        distance = math.tan(math.radians(angle)) * x_c # Distance from nodal point of world coordinates
+        y_c = round(distance * math.cos(math.radians(azimuth_on_sensor)), 2)
+        z_c = round(distance * math.sin(math.radians(azimuth_on_sensor)), 2)
         
         x_p = x_c
         y_p = y_c
